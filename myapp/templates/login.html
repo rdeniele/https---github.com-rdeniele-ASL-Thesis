@@ -3,6 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign It Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f8f8;
+            color: #1e5737;
+        }
+        
+        h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            border: 1px solid #1e5737;
+            border-radius: 8px;
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-container .login-btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #1e5737;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        .form-container p {
+            margin-top: 15px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>Login</h2>
+    <div class="form-container">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <p>Don't have an account?</p>
+        <a href="{% url 'register' %}">
+            <button class="login-btn" style="background-color: #fff; color: #1e5737; border: 1px solid #1e5737;">Register</button>
+        </a>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 </head>
 <body>
@@ -14,4 +113,4 @@
     </form>
     <a href="{% url 'register' %}">Don't have an account? Register</a>
 </body>
-</html>
+</html>-->
