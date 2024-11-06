@@ -160,3 +160,73 @@
     {% endif %}
 </body>
 </html>-->
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            padding-left: 450px;
+            padding-right: 450px;
+            padding-top: 250px;
+            padding-bottom: 250px;
+            max-width: 500px;
+            max-height: 200px;
+            background-color: #b3b3b3;
+            border-radius: 20px;
+            align-items: center;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #1e5737;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #1e5737;
+        }
+        .content {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    <div class="container">
+        <div class="content">
+            <h1>Welcome {{ user.username }}</h1>
+            <p>Main Page</p>
+        </div>
+    </div>
+</body>
+</html>
