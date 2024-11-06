@@ -31,6 +31,9 @@ def get_detector(request):
 def home(request):
     return render(request, 'home.html')
 
+def dashboard(request):
+    return render(request, 'dashboard.html') #new
+
 
 def register(request):
     if request.method == 'POST':
@@ -41,7 +44,7 @@ def register(request):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('myapp:home')
+            return redirect('myapp:dashboard')
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
@@ -55,7 +58,7 @@ def user_login(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('myapp:home')  # Ensure this matches the URL pattern name
+                return redirect('myapp:dashboard')  # Ensure this matches the URL pattern name    #new
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
@@ -104,7 +107,7 @@ def cleanup_view(request):
         detector.cleanup()
         del detectors[request.user.id]  # Remove detector instance
         del detector_locks[request.user.id]  # Remove corresponding lock
-    return redirect('home')
+    return redirect('dashboard') #new
 
 
 @login_required
