@@ -1,3 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASL Detection</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .video-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        #video-feed {
+            border: 2px solid #333;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+        #predictionResult {
+            font-size: 18px;
+            margin: 20px 0;
+            padding: 16px;
+        }
+        #debug-info {
+            margin: 10px 0;
+            padding: 8px;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4">
+        <h2>Welcome, {% if user.is_authenticated %}{{ user.username }}{% else %}Guest{% endif %}</h2>
+        {% if user.is_authenticated %}
+            <a href="{% url 'myapp:logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'myapp:login' %}">Login</a>
+            <a href="{% url 'myapp:register' %}">Register</a>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+            <h2 id="real-time-asl-detection" class="text-2xl font-bold mb-4">Real-time ASL Detection</h2>
+
+            <div id="debug-info" class="text-sm">
+                Stream Status: <span id="stream-status">Connecting...</span>
+            </div>
+
+            <div class="video-container">
+                <img id="video-feed" 
+                     src="" 
+                     width="640" 
+                     height="480" 
+                     style="max-width: 100%; height: auto;"
+                     onerror="handleVideoError()"
+                     onload="handleVideoLoad()"
+                     alt="ASL Detection Video Feed" />
+            </div>
+
+            <div id="predictionResult" class="mt-4 p-4 bg-gray-100 rounded">
+                <div>Current Sign: <span id="currentSign">-</span></div>
+                {% comment %} <div>Confidence: <span id="confidence">0.0</span></div> {% endcomment %}
+            </div>
+
+            <div class="mt-4 text-center">
+                <button onclick="stopDetection()" 
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Stop Detection
+                </button>
+                <a href="{% url 'myapp:cleanup' %}" 
+                   class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+                    Cleanup
+                </a>
+            </div>
+        {% else %}
+            <div class="text-center py-8">
+                Please log in to access ASL detection.
+            </div>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <script>
+        let predictionInterval;
+        let isStreamActive = false;
+
+        function updateStreamStatus(status) {
+            document.getElementById('stream-status').textContent = status;
+        }
+
+        function handleVideoError() {
+            updateStreamStatus('Error loading video feed');
+            stopDetection();
+        }
+
+        function handleVideoLoad() {
+            updateStreamStatus('Connected');
+            isStreamActive = true;
+        }
+
+        async function startDetection() {
+            if (!isStreamActive) {
+                const videoFeed = document.getElementById('video-feed');
+                videoFeed.src = "{% url 'myapp:video_feed' %}";
+                updateStreamStatus('Connecting...');
+
+                // Start getting predictions
+                predictionInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch("{% url 'myapp:get_prediction' %}");
+                        if (!response.ok) throw new Error('Network response was not ok');
+                        const data = await response.json();
+                        
+                        document.getElementById('currentSign').textContent = data.prediction;
+                        document.getElementById('confidence').textContent = 
+                            (data.confidence * 100).toFixed(1) + '%';
+                    } catch (error) {
+                        console.error('Error getting prediction:', error);
+                        updateStreamStatus('Error getting prediction');
+                    }
+                }, 1000);
+            }
+        }
+
+        async function stopDetection() {
+            const videoFeed = document.getElementById('video-feed');
+            videoFeed.pause();
+            videoFeed.src = '';
+            clearInterval(predictionInterval);
+            isStreamActive = false;
+            updateStreamStatus('Stopped');
+            
+            // Call cleanup endpoint
+            try {
+                const response = await fetch("{% url 'myapp:cleanup' %}");
+                if (!response.ok) throw new Error('Cleanup failed');
+                console.log('Cleanup completed');
+            } catch (error) {
+                console.error('Error during cleanup:', error);
+            }
+        }
+
+        // Initialize when document is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Start detection automatically
+            startDetection();
+
+            window.addEventListener('beforeunload', stopDetection);
+            window.addEventListener('unload', stopDetection);
+        });
+    </script>
+    {% endif %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
 <!--<!DOCTYPE html>
 <html lang="en">
 <head>
