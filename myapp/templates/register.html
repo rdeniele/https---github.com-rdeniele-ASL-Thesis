@@ -3,6 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign it on</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f8f8;
+            color: #1e5737;
+        }
+        
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            border: 1px solid #1e5737;
+            border-radius: 8px;
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-container .register-btn,
+        .form-container .login-btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: white;
+            background-color: #1e5737;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container .login-btn {
+            background-color: #fff;
+            color: #1e5737;
+            border: 1px solid #1e5737;
+            margin-top: 10px;
+        }
+
+        .form-container .login-btn:hover,
+        .form-container .register-btn:hover {
+            opacity: 0.9;
+        }
+
+        .form-container p {
+            margin-top: 15px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sign it up</h1>
+    <div class="form-container">
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+
+        <p>Already have an account?</p>
+        <a href="{% url 'login' %}">
+            <button class="login-btn">Login</button>
+        </a>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 </head>
 <body>
@@ -14,4 +126,4 @@
     </form>
     <a href="{% url 'login' %}">Already have an account? Login</a>
 </body>
-</html>
+</html>-->
