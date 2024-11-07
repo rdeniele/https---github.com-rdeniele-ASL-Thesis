@@ -166,66 +166,101 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Sign it on</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
-            color: #333;
+            padding: 0;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #2f4f4f;
         }
         .container {
             display: flex;
-            padding-left: 450px;
-            padding-right: 450px;
-            padding-top: 250px;
-            padding-bottom: 250px;
-            max-width: 500px;
-            max-height: 200px;
-            background-color: #b3b3b3;
-            border-radius: 20px;
+            max-width: 1500px;
+            padding: 20px;
+            background-color: #f8f8f8;
+            border-radius: 10px;
             align-items: center;
         }
-        .logout-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #1e5737;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
+        .text-section {
+            flex: 1;
+            padding-right: 20px;
         }
-        .logout-btn:hover {
-            opacity: 0.9;
-        }
-        h1 {
+        .text-section h1 {
             font-size: 2.5em;
-            margin-bottom: 20px;
-            color: #1e5737;
+            color: #2f4f4f;
+            margin: 0;
+            font-weight: bold;
+            text-align: left;
+            line-height: 1.2;
         }
-        .content {
-            text-align: center;
+        .description {
+            font-size: 1.1em;
+            color: #333333;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        .buttons {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px 0 0;
+            font-size: 1em;
+            border: 2px solid #2f4f4f;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #2f4f4f;
+            transition: 0.3s;
+        }
+        .buttons a:hover {
+            background-color: #2f4f4f;
+            color: #ffffff;
+        }
+        .image-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .image-section img {
+            max-width: 100%;
+            max-height: 800px; /* Limit the height */
+            width: auto;
+            height: auto;
+            border-radius: 20px;
         }
     </style>
 </head>
 <body>
-    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
     <div class="container">
-        <div class="content">
-            <h1>Welcome {{ user.username }}</h1>
-            <p>Main Page</p>
+        <div class="text-section">
+            <h1>YOUR VOICE,<br>OUR VISION</h1>
+            <div class="description">
+                Welcome to "Sign it on" where we bridge the gap between sign language and spoken words. Our platform is dedicated to empowering individuals with hearing disabilities by providing a seamless way to translate American Sign Language (ASL) into text and speech. We believe in the power of communication for everyone, and our innovative web-based solution is designed to make conversations more accessible, fostering inclusivity and understanding in every interaction. Join us in connecting worlds one word at a time, where every voice is heard, and every word is understood.
+            </div>
+            <div class="buttons">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            </div>
+        </div>
+        <div class="image-section">
+            {% load static %}
+            <img src="{% static 'images/image.png' %}" alt="Image">
         </div>
     </div>
 </body>
